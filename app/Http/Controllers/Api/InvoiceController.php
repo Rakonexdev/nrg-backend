@@ -13,7 +13,7 @@ class InvoiceController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Invoice::with('project:id,project_code,person_id', 'project.person:id,name', 'timesheetGroup');
+        $query = Invoice::with('project:id,project_code,person_id,type,fixed_description', 'project.person:id,name,qatar_id', 'timesheetGroup');
 
         if ($request->user()->hasRole('Collector')) {
             $assignedPersonIds = $request->user()
@@ -119,8 +119,8 @@ class InvoiceController extends Controller
 
         return response()->json(
             $invoice->load([
-                'project:id,project_code,person_id',
-                'project.person:id,name',
+                'project:id,project_code,person_id,type,fixed_description',
+                'project.person:id,name,qatar_id',
                 'timesheetGroup.timesheets.personnel',
                 'collections',
                 'collections.collector:id,name',

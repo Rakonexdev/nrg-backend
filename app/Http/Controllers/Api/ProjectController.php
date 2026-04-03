@@ -72,7 +72,8 @@ class ProjectController extends Controller
             $query->where('project_code', 'like', "%{$request->search}%");
         }
 
-        $paginated = $query->latest()->paginate(20);
+        $limit = $request->input('limit') === 'all' ? max(1, $query->count()) : $request->input('limit', 20);
+        $paginated = $query->latest()->paginate($limit);
         $paginated->setCollection(
             $paginated->getCollection()->map(fn ($project) => $this->appendWorkflowState($project))
         );

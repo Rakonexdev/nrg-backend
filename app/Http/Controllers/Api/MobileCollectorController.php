@@ -85,8 +85,9 @@ class MobileCollectorController extends Controller
         $today = now()->toDateString();
 
         $query = Invoice::with([
-            'project:id,project_name,company_name,person_id',
-            'project.person:id,name,phone,qatar_id,id_expiration_date'
+            'project:id,project_code,type,person_id',
+            'project.person:id,name,phone,qatar_id,id_expiration_date,company_id',
+            'project.person.company:id,name'
         ])->whereIn('status', ['draft', 'issued', 'partially_paid']);
 
         if ($type === 'due_today') {
